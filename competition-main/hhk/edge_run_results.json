@@ -1,0 +1,146 @@
+{
+  "latency_avg_ms": 108.2,
+  "total": 20,
+  "results": [
+    {
+      "task_id": "T-HYD-1784562576623-00000",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 121.9,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00060",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 109.1,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00120",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 110.8,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00180",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 107.4,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00240",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 103.7,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00300",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 104.8,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00360",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 108.8,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00420",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 108.2,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576623-00480",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 108.1,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00540",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 110.6,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00600",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 107.2,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00660",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 104.6,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00720",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 104.9,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00780",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 108.1,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00840",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 104.2,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00900",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 109.3,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-00960",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 109.0,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-01020",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 110.2,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-01080",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 105.1,
+      "raw": "1"
+    },
+    {
+      "task_id": "T-HYD-1784562576624-01140",
+      "category": 1,
+      "category_name": "轴承磨损",
+      "latency_ms": 108.6,
+      "raw": "1"
+    }
+  ]
+}
