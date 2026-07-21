@@ -28,7 +28,10 @@ PROJECT_ROOT = HHK_DIR.parent.parent.parent  # d:\Challenge Cup
 LLAMA_DIR = PROJECT_ROOT / "llama"
 LLAMA_SERVER_EXE = LLAMA_DIR / "llama-server.exe"
 MODEL_PATH = LLAMA_DIR / "Qwen_Qwen3-1.7B-IQ4_XS.gguf"
-EDGE_IO_DIR = PROJECT_ROOT / "edge-io-protocol"
+# edge-io-protocol: 优先找仓库内副本, 回退到项目根目录
+EDGE_IO_DIR = HHK_DIR.parent.parent / "edge-io-protocol"  # 7.20/edge-io-protocol
+if not EDGE_IO_DIR.exists():
+    EDGE_IO_DIR = PROJECT_ROOT / "edge-io-protocol"
 
 sys.path.insert(0, str(HHK_DIR))
 sys.path.insert(0, str(EDGE_IO_DIR))

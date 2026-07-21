@@ -28,7 +28,11 @@ from collections import deque
 # 路径
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent  # d:\Challenge Cup
-sys.path.insert(0, str(PROJECT_ROOT / "edge-io-protocol"))
+# edge-io-protocol: 优先找仓库内副本, 回退到项目根目录
+EDGE_IO_DIR = SCRIPT_DIR.parent.parent / "edge-io-protocol"  # 7.20/edge-io-protocol
+if not EDGE_IO_DIR.exists():
+    EDGE_IO_DIR = PROJECT_ROOT / "edge-io-protocol"
+sys.path.insert(0, str(EDGE_IO_DIR))
 
 import edge_inference
 
