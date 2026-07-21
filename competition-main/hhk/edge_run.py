@@ -196,63 +196,27 @@ def load_prompt_and_grammar():
 
 
 def run_inference(input_file, endpoint, max_samples=100):
-    """批量短决策推理"""
+    """批量短决策推理 — 复用 edge_inference.infer() 产出标准 output.json"""
     with open(input_file, "r", encoding="utf-8") as f:
         inputs = json.load(f)
 
-    template, grammar = load_prompt_and_grammar()
+    # 复用标准推理框架 (edge-io-protocol/edge_inference.py)
+    import edge_inference
+    edge_inference.LLAMA_SERVER = endpoint
+
     total = min(len(inputs), max_samples)
-
-    CATEGORY_NAMES = {0: "正常", 1: "轴承磨损", 2: "轴承失效",
-                      3: "电流不平衡", 4: "过热", 5: "管路堵塞", 6: "传感器漂移"}
-
-    results = []
+    results = []       # 标准 output.json 列表
     latencies = []
-    import re
 
-    print(f"  🔮 推理中 ({total} 条, GBNF={'是' if grammar else '否'})...")
+    print(f"  🔮 推理中 ({total} 条, 标准输出 output.json)...")
 
     for i, entry in enumerate(inputs[:total]):
-        readings = entry.get("data", {}).get("readings", {})
-        data_text = " ".join(f"{k}={v}" for k, v in readings.items())
-
-        if template and "{input_data}" in template:
-            prompt = template.replace("{input_data}", data_text)
-        else:
-            prompt = f"你是工业边缘分类器。输出类别码(0-6)。\n{data_text}"
-
-        payload = {
-            "prompt": prompt,
-            "n_predict": 2,
-            "temperature": 0.0,
-            "stream": False,
-        }
-        if grammar:
-            payload["grammar"] = grammar
-
-        t0 = time.time()
         try:
-            req = urllib.request.Request(
-                f"{endpoint}/completion",
-                data=json.dumps(payload).encode(),
-                headers={"Content-Type": "application/json"}
-            )
-            resp = urllib.request.urlopen(req, timeout=30)
-            body = json.loads(resp.read())
-            elapsed = (time.time() - t0) * 1000
-            latencies.append(elapsed)
-
-            raw = body.get("content", "").strip()
-            m = re.search(r'[0-6]', raw)
-            category = int(m.group()) if m else -1
-
-            results.append({
-                "task_id": entry.get("task_id", f"T-{i}"),
-                "category": category,
-                "category_name": CATEGORY_NAMES.get(category, "未知"),
-                "latency_ms": round(elapsed, 1),
-                "raw": raw,
-            })
+            r = edge_inference.infer(entry, use_grammar=True)
+            out = r["output"]                       # 标准 output.json
+            out["raw_model_response"] = r.get("raw_model_response", "")
+            results.append(out)
+            latencies.append(out.get("latency_ms", 0))
         except Exception as e:
             results.append({"task_id": entry.get("task_id", f"T-{i}"), "error": str(e)})
 
@@ -330,18 +294,21 @@ def main():
         avg_lat = sum(latencies) / len(latencies)
         p95 = sorted(latencies)[int(len(latencies) * 0.95)]
         within_200 = sum(1 for l in latencies if l <= 200)
+        escalated = sum(1 for r in results if r.get("escalate_to_cloud"))
 
         print(f"  请求数:     {len(results)}")
         print(f"  成功数:     {sum(1 for r in results if 'error' not in r)}")
         print(f"  平均时延:   {avg_lat:.1f} ms")
         print(f"  P95 时延:   {p95:.1f} ms")
         print(f"  200ms达标:  {within_200}/{len(latencies)} ({within_200/len(latencies)*100:.0f}%)")
+        print(f"  甩云建议:   {escalated}/{len(results)} ({escalated/max(len(results),1)*100:.0f}%)")
 
-        # 分类分布
+        # 决策分布 (从标准 output 的 decision.action 提取)
         from collections import Counter
-        cats = Counter(r.get("category_name", "错误") for r in results if "error" not in r)
-        print(f"\n  分类分布:")
-        for name, cnt in cats.most_common():
+        acts = Counter(r.get("decision", {}).get("action", "错误")
+                       for r in results if "error" not in r)
+        print(f"\n  决策分布 (action):")
+        for name, cnt in acts.most_common():
             print(f"    {name:<12}: {cnt}")
 
     # 保存结果
